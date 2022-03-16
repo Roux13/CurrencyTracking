@@ -15,6 +15,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+//        buildConfigField("String", "API_KEY", API_KEY)
     }
 
     buildFeatures {
@@ -59,27 +61,27 @@ dependencies {
     def roomVersion = "2.4.2"
 
     implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
 
     //Dagger
     def daggerVersion = "2.35.1"
 
     implementation "com.google.dagger:dagger-android:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     //Retrofit
     def retrofitVersion = "2.9.0"
+    def okhttpVersion = "4.9.0"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.okhttp3:okhttp:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     // Compose
     def composeVersion = "1.1.1"
     def composeActivity = "1.4.0"
-    def composeNavigation = "2.4.0"
+    def composeNavigation = "2.4.1"
 
     implementation "androidx.compose.ui:ui:$composeVersion"
     implementation "androidx.compose.ui:ui-tooling:$composeVersion"
