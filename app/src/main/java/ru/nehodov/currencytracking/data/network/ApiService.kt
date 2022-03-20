@@ -1,13 +1,14 @@
 package ru.nehodov.currencytracking.data.network
 
+import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Query
+import ru.nehodov.currencytracking.data.network.response.ApiResponse
 
 interface ApiService {
 
-    companion object {
-        const val BASE_URL = "https://api.exchangeratesapi.io"
-    }
-
-//    @GET("/latest")
-//    fun getCurrencies():
+    @GET("/latest")
+    suspend fun getCurrencies(
+        @Query("base") baseCurrency: String,
+    ): Response<ApiResponse>
 }

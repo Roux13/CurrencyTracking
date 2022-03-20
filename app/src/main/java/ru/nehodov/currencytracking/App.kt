@@ -2,7 +2,7 @@ package ru.nehodov.currencytracking
 
 import android.app.Application
 import ru.nehodov.currencytracking.di.component.AppComponent
-import ru.nehodov.currencytracking.di.DaggerAppComponent
+import ru.nehodov.currencytracking.di.component.DaggerAppComponent
 
 class App : Application() {
 
@@ -10,8 +10,10 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        appComponent = DaggerAppComponent.create()
-        appComponent = DaggerAppComponent.builder().build()
+        appComponent = DaggerAppComponent.builder()
+            .application(this)
+            .context(applicationContext)
+            .build()
     }
 
 }
