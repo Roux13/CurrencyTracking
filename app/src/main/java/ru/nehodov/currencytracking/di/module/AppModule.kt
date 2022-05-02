@@ -4,13 +4,12 @@ import dagger.Module
 import dagger.Provides
 import ru.nehodov.currencytracking.data.providers.BuildInfoProvider
 import ru.nehodov.currencytracking.data.providers.BuildInfoProviderImpl
-import javax.inject.Singleton
 
 @Module
-class AppModule {
+object AppModule {
 
+    @AppScope
     @Provides
-    @Singleton
     fun provideBuildInfoProvider(): BuildInfoProvider {
         return BuildInfoProviderImpl()
     }

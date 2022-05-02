@@ -5,12 +5,11 @@ import dagger.Module
 import dagger.Provides
 import ru.nehodov.currencytracking.data.preferences.PreferencesDataStore
 import ru.nehodov.currencytracking.data.preferences.PreferencesDataStoreImpl
-import javax.inject.Singleton
 
 @Module
-class PreferenceModule {
+object PreferenceModule {
 
-    @Singleton
+    @AppScope
     @Provides
     fun providePreferencesDataStore(context: Context): PreferencesDataStore {
         return PreferencesDataStoreImpl(context)

@@ -1,36 +1,22 @@
 package ru.nehodov.currencytracking.di.module
 
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import ru.nehodov.currencytracking.data.db.CurrencyDb
-import ru.nehodov.currencytracking.data.network.ApiService
-import ru.nehodov.currencytracking.data.preferences.PreferencesDataStore
-import ru.nehodov.currencytracking.data.repository.AppSettingsRepository
 import ru.nehodov.currencytracking.data.repository.AppSettingsRepositoryImpl
-import ru.nehodov.currencytracking.data.repository.CurrencyRepository
 import ru.nehodov.currencytracking.data.repository.CurrencyRepositoryImpl
-import javax.inject.Singleton
+import ru.nehodov.currencytracking.domain.repository.AppSettingsRepository
+import ru.nehodov.currencytracking.domain.repository.CurrencyRepository
 
 @Module
-class RepositoryModule {
+abstract class RepositoryModule {
 
-    @Provides
-    @Singleton
-    fun provideCurrencyRepository(
-        apiService: ApiService,
-        db: CurrencyDb,
-        appSettingsRepository: AppSettingsRepository,
-    ): CurrencyRepository {
-        return CurrencyRepositoryImpl(
-            apiService = apiService,
-            currencyDao = db.currencyDao(),
-            appSettingsRepository = appSettingsRepository
-        )
-    }
+    @AppScope
+    @Binds
+    abstract fun provideCurrencyRepository(
+        currencyRepository: CurrencyRepositoryImpl
+    ): CurrencyRepository
 
-    @Singleton
-    @Provides
-    fun provideAppSettingsRepository(preferencesDataStore: PreferencesDataStore): AppSettingsRepository {
-        return AppSettingsRepositoryImpl(preferencesDataStore)
-    }
+    @AppScope
+    @Binds
+    abstract fun provideAppSettingsRepository(appSettingsRepository: AppSettingsRepositoryImpl): AppSettingsRepository
 }

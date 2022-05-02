@@ -8,9 +8,8 @@ import dagger.android.AndroidInjector
 import ru.nehodov.currencytracking.App
 import ru.nehodov.currencytracking.MainActivity
 import ru.nehodov.currencytracking.di.module.*
-import javax.inject.Singleton
 
-@Singleton
+@AppScope
 @Component(
     modules = [
         AppModule::class,
@@ -25,16 +24,11 @@ interface AppComponent : AndroidInjector<App> {
 
     fun inject(mainActivity: MainActivity)
 
-    @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        fun context(context: Context): Builder
-
-        @BindsInstance
-        fun application(application: Application): Builder
-
-        fun build(): AppComponent
+    @Component.Factory
+    interface Factory {
+        fun create(
+            @BindsInstance context: Context,
+            @BindsInstance application: Application,
+        ): AppComponent
     }
-
 }

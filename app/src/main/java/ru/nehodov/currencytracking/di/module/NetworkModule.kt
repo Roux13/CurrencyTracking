@@ -5,17 +5,15 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.nehodov.currencytracking.data.network.ApiService
 import ru.nehodov.currencytracking.data.network.ApiConstants
+import ru.nehodov.currencytracking.data.network.ApiService
 import ru.nehodov.currencytracking.data.network.HeaderInterceptor
 import ru.nehodov.currencytracking.data.providers.BuildInfoProvider
-import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+object NetworkModule {
 
     @Provides
-    @Singleton
     fun provideGson(): GsonConverterFactory {
         return GsonConverterFactory.create()
     }
@@ -25,7 +23,6 @@ class NetworkModule {
         return HeaderInterceptor(buildInfoProvider)
     }
 
-    @Singleton
     @Provides
     fun provideOkhttp(headerInterceptor: HeaderInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
@@ -33,8 +30,8 @@ class NetworkModule {
             .build()
     }
 
+    @AppScope
     @Provides
-    @Singleton
     fun provideRetrofit(
         gsonFactory: GsonConverterFactory,
         okHttpClient: OkHttpClient,
@@ -46,8 +43,8 @@ class NetworkModule {
             .build()
     }
 
+    @AppScope
     @Provides
-    @Singleton
     fun provideApiService(
         retrofit: Retrofit,
     ): ApiService {

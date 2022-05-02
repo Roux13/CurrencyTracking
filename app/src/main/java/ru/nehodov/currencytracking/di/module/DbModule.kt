@@ -6,19 +6,24 @@ import dagger.Module
 import dagger.Provides
 import ru.nehodov.currencytracking.data.db.CurrencyDb
 import ru.nehodov.currencytracking.data.db.DbConstants
-import javax.inject.Singleton
+import ru.nehodov.currencytracking.data.db.dao.CurrencyDao
 
 @Module
-class DbModule {
+object DbModule {
 
+    @AppScope
     @Provides
-    @Singleton
     fun provideDatabase(application: Application): CurrencyDb {
         return Room.databaseBuilder(
             application,
             CurrencyDb::class.java,
             DbConstants.DB_NAME
         ).build()
+    }
+
+    @Provides
+    fun provideCurrenciesDao(currencyDb: CurrencyDb): CurrencyDao {
+        return currencyDb.currencyDao()
     }
 
 }

@@ -6,14 +6,11 @@ import ru.nehodov.currencytracking.di.component.DaggerAppComponent
 
 class App : Application() {
 
-    lateinit var appComponent: AppComponent
-
-    override fun onCreate() {
-        super.onCreate()
-        appComponent = DaggerAppComponent.builder()
-            .application(this)
-            .context(applicationContext)
-            .build()
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory()
+            .create(
+                context = applicationContext,
+                application = this,
+            )
     }
-
 }
