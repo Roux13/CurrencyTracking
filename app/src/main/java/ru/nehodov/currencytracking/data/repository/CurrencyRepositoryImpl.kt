@@ -32,7 +32,7 @@ class CurrencyRepositoryImpl @Inject constructor(
         }
     }
 
-    suspend fun getCurrencies(): Result<List<CurrencyEntity>> {
+    override suspend fun getCurrencies(): Result<List<CurrencyEntity>> {
         return runCatching { currencyDao.getAll() }
     }
 }

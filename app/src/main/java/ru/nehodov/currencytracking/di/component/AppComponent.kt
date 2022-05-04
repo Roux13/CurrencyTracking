@@ -8,6 +8,7 @@ import dagger.android.AndroidInjector
 import ru.nehodov.currencytracking.App
 import ru.nehodov.currencytracking.MainActivity
 import ru.nehodov.currencytracking.di.module.*
+import ru.nehodov.currencytracking.presentation.feature.mainScreen.MainScreenViewModel
 
 @AppScope
 @Component(
@@ -17,12 +18,14 @@ import ru.nehodov.currencytracking.di.module.*
         NetworkModule::class,
         RepositoryModule::class,
         PreferenceModule::class,
+        ViewModelModule::class,
     ]
 )
 
 interface AppComponent : AndroidInjector<App> {
 
     fun inject(mainActivity: MainActivity)
+    fun mainScreenViewModel(): MainScreenViewModel
 
     @Component.Factory
     interface Factory {

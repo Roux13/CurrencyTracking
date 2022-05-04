@@ -39,6 +39,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
     }
 }
 
@@ -51,7 +54,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     //lifecycle
-    def lifecycle_version = "2.5.0-alpha04"
+    def lifecycle_version = "2.5.0-beta01"
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
@@ -62,7 +65,7 @@ dependencies {
 
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:2.4.2")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     //DataStore
     def dataStoreVersion = "1.0.0"

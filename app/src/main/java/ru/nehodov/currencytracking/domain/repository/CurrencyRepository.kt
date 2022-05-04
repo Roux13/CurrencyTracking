@@ -6,4 +6,5 @@ import ru.nehodov.currencytracking.data.network.response.ApiResponse
 
 interface CurrencyRepository {
     suspend fun updateCurrencies(apiResponseToCurrencyEntitiesMapper: IEntityMapper<ApiResponse, List<CurrencyEntity>>): Result<Unit>
+    suspend fun getCurrencies(): Result<List<CurrencyEntity>>
 }
