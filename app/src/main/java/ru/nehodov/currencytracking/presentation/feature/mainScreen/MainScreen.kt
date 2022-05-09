@@ -1,5 +1,6 @@
 package ru.nehodov.currencytracking.presentation.feature.mainScreen
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.nehodov.currencytracking.domain.model.Currency
 
 enum class MainScreenTab {
     ALL_CURRENCIES,
@@ -42,30 +44,41 @@ fun MainScreen(
 
         }
     ) {
-        MainScreenContent(screenState.value.currencies.map { it.name })
+        MainScreenContent(screenState.value.currencies)
     }
 }
 
 @Composable
-private fun MainScreenContent(currencies: List<String>) {
+private fun MainScreenContent(currencies: List<Currency>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(currencies) { item ->
-            ListItem(currencyName = item)
+            ListItem(currency = item)
         }
     }
 }
 
 @Composable
-fun ListItem(currencyName: String) {
+fun ListItem(currency: Currency) {
     Card(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            modifier = Modifier
+        Row(
+            Modifier
                 .fillMaxWidth()
-                .padding(8.dp), text = currencyName, style = MaterialTheme.typography.h5, textAlign = TextAlign.Center
-        )
+                .padding(8.dp)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(8.dp), text = currency.name, style = MaterialTheme.typography.h5, textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp), text = currency.rate.toString(), style = MaterialTheme.typography.h5, textAlign = TextAlign.Center
+            )
+        }
+
     }
 }
 
@@ -83,6 +96,12 @@ private fun MainBottomBar() {
 @Composable
 fun MainScreenContentPreview() {
     MaterialTheme {
-        MainScreenContent(currencies = listOf("EUR", "USD", "RUB"))
+        MainScreenContent(
+            currencies = listOf(
+                Currency("EUR", rate = 1.0, isFavorite = false),
+                Currency("USD", rate = 0.9, isFavorite = false),
+                Currency("RUB", rate = 83.6, isFavorite = false),
+            )
+        )
     }
 }

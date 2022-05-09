@@ -1,17 +1,18 @@
 package ru.nehodov.currencytracking.presentation.feature.mainScreen
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.withContext
-import ru.nehodov.currencytracking.data.mappers.ApiResponseToCurrencyListMapper
-import ru.nehodov.currencytracking.domain.repository.CurrencyRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import ru.nehodov.currencytracking.domain.usecase.UpdateCurrenciesUseCase
+import ru.nehodov.currencytracking.domain.usecase.WatchCurrenciesUseCase
 import ru.nehodov.currencytracking.extension.launchCoroutine
 import javax.inject.Inject
 
 class MainScreenViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository
+    private val updateCurrenciesUseCase: UpdateCurrenciesUseCase,
+    private val watchCurrenciesUseCase: WatchCurrenciesUseCase,
 ) : ViewModel() {
 
     private val _screenStateFlow: MutableStateFlow<MainScreenState> = MutableStateFlow(
@@ -24,13 +25,23 @@ class MainScreenViewModel @Inject constructor(
 
     init {
         launchCoroutine {
-            currencyRepository.getCurrencies()
-                .onSuccess { currencies ->
-                    updateScreenState(_screenStateFlow.value.copy(currencies = currencies))
-                }
-                .onFailure {
-                    print(it.message)
-                }
+            watchCurrenciesUseCase.invoke(Unit)
+                .onEach { result ->
+                    result
+                        .onSuccess { currencies ->
+                            _screenStateFlow.value.let { currentScreenState ->
+                                updateScreenState(currentScreenState.copy(currencies = currencies.filterNot {
+                                    it.name.equals(
+                                        currentScreenState.baseCurrency,
+                                        ignoreCase = true
+                                    )
+                                }))
+                            }
+                        }
+                        .onFailure {
+                            print(it.message)
+                        }
+                }.collect()
         }
     }
 
@@ -54,9 +65,7 @@ class MainScreenViewModel @Inject constructor(
 
     fun updateCurrencies() {
         launchCoroutine {
-            withContext(Dispatchers.IO) {
-                currencyRepository.updateCurrencies(ApiResponseToCurrencyListMapper())
-            }
+            updateCurrenciesUseCase(Unit)
         }
     }
 

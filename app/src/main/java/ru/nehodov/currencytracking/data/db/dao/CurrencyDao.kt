@@ -1,6 +1,7 @@
 package ru.nehodov.currencytracking.data.db.dao
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import ru.nehodov.currencytracking.data.db.entity.CurrencyEntity
 
 @Dao
@@ -29,5 +30,5 @@ interface CurrencyDao {
     }
 
     @Query("SELECT * FROM currency")
-    suspend fun getAll(): List<CurrencyEntity>
+    fun getAll(): Flow<List<CurrencyEntity>>
 }
