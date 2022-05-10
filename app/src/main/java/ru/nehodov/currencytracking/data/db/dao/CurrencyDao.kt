@@ -1,6 +1,10 @@
 package ru.nehodov.currencytracking.data.db.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 import ru.nehodov.currencytracking.data.db.entity.CurrencyEntity
 
@@ -10,7 +14,8 @@ interface CurrencyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg currencyEntity: CurrencyEntity)
 
-    @Query("""
+    @Query(
+        """
         UPDATE 
             currency 
         SET 
@@ -31,4 +36,16 @@ interface CurrencyDao {
 
     @Query("SELECT * FROM currency")
     fun getAll(): Flow<List<CurrencyEntity>>
+
+    @Query(
+        """
+        UPDATE 
+            currency 
+        SET 
+            isFavourite = :isFavourite
+        WHERE
+            name = :name 
+    """
+    )
+    suspend fun updateIsFavourite(name: String, isFavourite: Boolean): Int
 }

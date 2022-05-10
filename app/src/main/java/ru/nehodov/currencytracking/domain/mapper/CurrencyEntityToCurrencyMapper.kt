@@ -10,7 +10,7 @@ class CurrencyEntityListToCurrencyListMapper : Mapper<List<CurrencyEntity>, List
             Currency(
                 name = entity.name,
                 rate = entity.rate,
-                isFavorite = false,
+                isFavorite = entity.isFavourite ?: false,
             )
         }
     }

@@ -11,4 +11,5 @@ data class CurrencyEntity(
     @PrimaryKey
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "rate") val rate: Double,
+    @ColumnInfo(name = "isFavourite") val isFavourite: Boolean?,
 )

@@ -9,7 +9,7 @@ import javax.inject.Inject
 class WatchCurrenciesUseCase @Inject constructor(
     private val currencyRepository: CurrencyRepository,
 ) : UseCase<Unit, Flow<Result<List<Currency>>>> {
-    override suspend fun invoke(params: Unit): Flow<Result<List<Currency>>> {
+    override fun invoke(params: Unit): Flow<Result<List<Currency>>> {
         return currencyRepository.getCurrencies(CurrencyEntityListToCurrencyListMapper())
     }
 }

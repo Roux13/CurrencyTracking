@@ -3,6 +3,7 @@ package ru.nehodov.currencytracking.di.module
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.nehodov.currencytracking.data.network.ApiConstants
@@ -25,8 +26,11 @@ object NetworkModule {
 
     @Provides
     fun provideOkhttp(headerInterceptor: HeaderInterceptor): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
+            .addInterceptor(logging)
             .build()
     }
 
